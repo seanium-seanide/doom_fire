@@ -15,6 +15,11 @@ FetchContent_MakeAvailable(SDL3)
 target_sources(sdl3_pixels
   PRIVATE
     main.cpp
+    Application.cpp
+    utilities.cpp
+
+  PUBLIC
+    FILE_SET HEADERS
 )
 
 target_link_libraries(sdl3_pixels

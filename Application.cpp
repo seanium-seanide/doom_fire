@@ -1,0 +1,229 @@
+#include <Application.hpp>
+#include <print>
+
+
+namespace doom_fire
+{
+
+int Application::main()
+{
+  init();
+
+  while (m_running)
+  {
+    timingStart();
+
+    input();
+    update();
+    render();
+
+    timingEnd();
+  }
+
+  quit();
+
+  return 0;
+}
+
+
+void Application::update()
+{
+  // Fire source
+  for (std::size_t i{}; i < m_fireView.extent(0); ++i)
+  {
+    m_fireView[i, m_fireView.extent(1) - 1] = constants::firePalette[constants::firePalette.size() - 1];
+  }
+
+  // Update fire
+  for (std::size_t j{1}; j < m_fireView.extent(1); ++j)
+  {
+    for (int i{}; i < static_cast<int>(m_fireView.extent(0)); ++i)
+    {
+      m_fireView[i, j - 1] = m_fireView[i, j] - 1;
+    }
+  }
+}
+
+
+void Application::render()
+{
+  draw();
+
+  SDL_UpdateTexture(
+    m_framebufferTexture
+  , nullptr
+  , m_framebufferData.data()
+  , common::WIN_WIDTH * sizeof(uint32_t)
+  );
+
+  SDL_RenderTexture(m_renderer, m_framebufferTexture, nullptr, nullptr);
+
+  SDL_RenderPresent(m_renderer);
+}
+
+void Application::draw()
+{
+  // Clear framebuffer to black
+  m_framebufferData.fill(0x00000000);
+
+  // Blit fire
+  // TODO: Possibly faster to copy underlying 1D array?
+  // TODO: Can this blit be done more efficiently by using AVX2 intrinsics?
+  // TODO: Benchmark all 3 cases!
+  static const auto yShift = m_framebufferView.extent(1) - m_fireView.extent(1);
+
+  for (std::size_t j{}; j < m_fireView.extent(1); ++j)
+  {
+    for (std::size_t i{}; i < m_fireView.extent(0); ++i)
+    {
+      setPixel(i, j + yShift, m_fireView[i, j]);
+    }
+  }
+}
+
+
+void Application::timingStart()
+{
+  m_frameStartCounts = SDL_GetPerformanceCounter();
+}
+
+
+void Application::timingEnd()
+{
+  m_frameEndCounts = SDL_GetPerformanceCounter();
+
+  m_frameElapsedTime_s = 
+    static_cast<double>(m_frameEndCounts - m_frameStartCounts)
+  / static_cast<double>(SDL_GetPerformanceFrequency());
+
+  if (m_frameElapsedTime_s < constants::FRAME_TIME_S)
+  {
+    SDL_Delay((constants::FRAME_TIME_S - m_frameElapsedTime_s) * 1000.0);
+  }
+
+  auto fps = 1.0 / ((SDL_GetPerformanceCounter() - m_frameStartCounts) / static_cast<double>(SDL_GetPerformanceFrequency()));
+  std::println(stderr, "### frame time: {} ###", fps);
+}
+
+
+void Application::setPixel(std::size_t i, std::size_t j, uint32_t color)
+{
+  if (i >= m_framebufferView.extent(0) || j >= m_framebufferView.extent(1))
+  {
+    std::println(stderr, "Attempted to index m_framebufferView out of range ({}, {})", i, j);
+
+    exit(1);
+  }
+
+  m_framebufferView[i, j] = color;
+}
+
+
+void Application::init()
+{
+  if (!SDL_Init(SDL_INIT_VIDEO))
+  {
+    std::println(stderr, "SDL_Init: Failed to initialize SDL video subsystem");
+
+    quit();
+    exit(1);
+  }
+
+  m_window = SDL_CreateWindow(
+  constants::WIN_TITLE.data()
+  , common::WIN_WIDTH * 4
+  , common::WIN_HEIGHT * 4
+  , 0
+  );
+
+  if (m_window == nullptr)
+  {
+    std::println(stderr, "SDL_CreateWindow: Failed to create SDL window");
+
+    quit();
+    exit(1);
+  }
+
+  m_renderer = SDL_CreateRenderer(m_window, nullptr);
+
+  if (m_renderer == nullptr)
+  {
+    std::println(stderr, "SDL_CreateRenderer: Failed to create SDL renderer");
+
+    quit();
+    exit(1);
+  }
+
+  m_framebufferTexture = SDL_CreateTexture(
+    m_renderer
+  , SDL_PIXELFORMAT_XRGB8888
+  , SDL_TEXTUREACCESS_STREAMING
+  , common::WIN_WIDTH
+  , common::WIN_HEIGHT
+  );
+
+  SDL_SetTextureScaleMode(m_framebufferTexture, SDL_SCALEMODE_NEAREST);
+
+  m_running = true;
+}
+
+
+void Application::quit()
+{
+  if (m_framebufferTexture != nullptr)
+  {
+    SDL_DestroyTexture(m_framebufferTexture);
+  }
+
+  if (m_renderer != nullptr)
+  {
+    SDL_DestroyRenderer(m_renderer);
+  }
+
+  if (m_window != nullptr)
+  {
+    SDL_DestroyWindow(m_window);
+  }
+
+  if (SDL_WasInit(SDL_INIT_VIDEO))
+  {
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+  }
+
+  SDL_Quit();
+}
+
+
+void Application::input()
+{
+  SDL_Event event;
+
+  while (SDL_PollEvent(&event))
+  {
+    switch (event.type)
+    {
+    case SDL_EVENT_QUIT:
+    {
+      m_running = false;
+      break;
+    }
+
+    case SDL_EVENT_KEY_DOWN:
+    {
+      if (event.key.key == SDLK_ESCAPE)
+      {
+        m_running = false;
+      }
+
+      break;
+    }
+
+    default:
+    {
+      break;
+    }
+    }
+  }
+}
+
+}
