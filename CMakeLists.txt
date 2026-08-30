@@ -71,6 +71,11 @@ target_link_libraries(unit_tests
     Catch2::Catch2WithMain
 )
 
+target_compile_features(unit_tests
+  PRIVATE
+    cxx_std_26
+)
+
 add_test(
   NAME    unit_tests
   COMMAND unit_tests

@@ -16,10 +16,7 @@ constexpr auto FRAME_RATE_FPS{60.0}; // Frames per second
 constexpr auto FRAME_TIME_S{1.0 / FRAME_RATE_FPS}; // Seconds per frame
 
 // VGA mode 13h
-static constexpr auto WIN_SIZE{common::WIN_WIDTH * common::WIN_HEIGHT};
 static constexpr auto WIN_TITLE{"SDL3 Pixels"sv};
-
-static constexpr auto FIRE_SIZE{common::WIN_WIDTH * common::FIRE_HEIGHT};
 
 constexpr uint32_t PALETTE_SIZE{37};
 [[maybe_unused]] constexpr std::array<uint32_t, PALETTE_SIZE> firePalette{

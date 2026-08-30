@@ -2,7 +2,6 @@
 
 #include <types.hpp>
 #include <constants.hpp>
-#include <array>
 #include <cstdlib>
 #include <SDL3/SDL.h>
 
@@ -33,9 +32,9 @@ private:
   SDL_Texture* m_framebufferTexture{};
   bool m_running{};
 
-  std::array<common::data_type, constants::WIN_SIZE> m_framebufferData{};
+  types::FramebufferType m_framebufferData{};
   types::FramebufferSpanType m_framebufferView{m_framebufferData.data()};
-  std::array<common::data_type, constants::FIRE_SIZE> m_fireData{};
+  types::FireType m_fireData{};
   types::FireSpanType m_fireView{m_fireData.data()};
 
   uint64_t m_frameStartCounts{};
