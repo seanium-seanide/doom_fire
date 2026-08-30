@@ -47,7 +47,7 @@ void Application::update()
 
 void Application::render()
 {
-  draw();
+  //draw();
 
   SDL_UpdateTexture(
     m_framebufferTexture
@@ -92,17 +92,15 @@ void Application::timingEnd()
 {
   m_frameEndCounts = SDL_GetPerformanceCounter();
 
-  m_frameElapsedTime_s = 
-    static_cast<double>(m_frameEndCounts - m_frameStartCounts)
-  / static_cast<double>(SDL_GetPerformanceFrequency());
+  m_frameElapsedTime_s = static_cast<double>(m_frameEndCounts - m_frameStartCounts) / SDL_GetPerformanceFrequency();
 
   if (m_frameElapsedTime_s < constants::FRAME_TIME_S)
   {
     SDL_Delay((constants::FRAME_TIME_S - m_frameElapsedTime_s) * 1000.0);
   }
 
-  auto fps = 1.0 / ((SDL_GetPerformanceCounter() - m_frameStartCounts) / static_cast<double>(SDL_GetPerformanceFrequency()));
-  std::println(stderr, "### frame time: {} ###", fps);
+  auto fps = static_cast<double>(SDL_GetPerformanceFrequency()) / (SDL_GetPerformanceCounter() - m_frameStartCounts);
+  std::println(stderr, "[DEBUG] Frame rate: {}", fps);
 }
 
 

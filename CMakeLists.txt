@@ -12,6 +12,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SDL3)
 
+FetchContent_Declare(
+  Catch2
+  URL       https://github.com/catchorg/Catch2/archive/refs/tags/v3.15.3.tar.gz
+  URL_HASH  SHA256=b0299ae552918220a7a6e21e7de5b714777f4e8c883fb70c4bb23fe01df8c6e3
+)
+FetchContent_MakeAvailable(Catch2)
+
 target_sources(sdl3_pixels
   PRIVATE
     main.cpp
@@ -44,4 +51,27 @@ target_compile_options(sdl3_pixels
 target_link_options(sdl3_pixels
   PRIVATE
     -stdlib=libc++
+)
+
+enable_testing()
+
+add_executable(unit_tests)
+
+target_sources(unit_tests
+  PRIVATE
+    utilities.cpp
+    unit_tests.cpp
+
+  PUBLIC
+    FILE_SET HEADERS
+)
+
+target_link_libraries(unit_tests
+  PRIVATE
+    Catch2::Catch2WithMain
+)
+
+add_test(
+  NAME    unit_tests
+  COMMAND unit_tests
 )
