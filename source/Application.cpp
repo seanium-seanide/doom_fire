@@ -30,6 +30,9 @@ int Application::main()
 
 void Application::update()
 {
+  // TODO: Use the timer to tidy up the loop frame rate clamping
+  // TODO: Fix yo timestep
+
   static std::random_device rd{};
   static std::mt19937 mt{rd()};
 

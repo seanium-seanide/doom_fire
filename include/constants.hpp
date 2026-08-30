@@ -8,6 +8,8 @@
 
 using namespace std::string_view_literals;
 
+// TODO: Use container size constants in Application.cpp
+
 namespace doom_fire::constants
 {
 
@@ -16,8 +18,9 @@ constexpr auto FRAME_RATE_FPS{60.0}; // Frames per second
 constexpr auto FRAME_TIME_S{1.0 / FRAME_RATE_FPS}; // Seconds per frame
 
 // VGA mode 13h
-static constexpr auto WIN_TITLE{"SDL3 Pixels"sv};
+static constexpr auto WIN_TITLE{"Doom Fire"sv};
 
+// TODO: Detect palette size at compile time (if possible)
 constexpr uint32_t PALETTE_SIZE{37};
 constexpr std::array<uint32_t, PALETTE_SIZE> firePalette{
   0x00070707, 0x001F0707, 0x002F0F07, 0x00470F07,
