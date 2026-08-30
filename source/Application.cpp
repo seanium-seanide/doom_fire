@@ -170,7 +170,7 @@ void Application::init()
   constants::WIN_TITLE.data()
   , common::WIN_WIDTH * 4
   , common::WIN_HEIGHT * 4
-  , 0
+  , SDL_WINDOW_RESIZABLE
   );
 
   if (m_window == nullptr)
