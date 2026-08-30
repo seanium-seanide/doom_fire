@@ -6,4 +6,5 @@
       the timer times out, if the hot plate is off, clear the fire buffer buffer so the window does not display with
       a gray-ish gradient up to `FIRE_HEIGHT`.
 * [ ] Resolve embedded TODOs.
+* [ ] Add MSVC build presets, with conditional compilation to circumvent MSVC's lack of complete support for `mdspan`.
 * [ ] Eventually, render the fire on the GPU via OpenGL.
