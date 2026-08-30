@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
-project(sdl3_pixels VERSION 1.0.0 LANGUAGES CXX)
+project(doom_fire VERSION 1.0.0 LANGUAGES CXX)
 
-add_executable(sdl3_pixels)
+add_executable(doom_fire)
 
 include(FetchContent)
 
@@ -19,7 +19,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-target_sources(sdl3_pixels
+target_sources(doom_fire
   PRIVATE
     main.cpp
     Application.cpp
@@ -29,17 +29,17 @@ target_sources(sdl3_pixels
     FILE_SET HEADERS
 )
 
-target_link_libraries(sdl3_pixels
+target_link_libraries(doom_fire
   PRIVATE
     SDL3::SDL3
 )
 
-target_compile_features(sdl3_pixels
+target_compile_features(doom_fire
   PRIVATE
     cxx_std_26
 )
 
-target_compile_options(sdl3_pixels
+target_compile_options(doom_fire
   PRIVATE
     -Wall
     -Wextra
@@ -48,7 +48,7 @@ target_compile_options(sdl3_pixels
     -stdlib=libc++
 )
 
-target_link_options(sdl3_pixels
+target_link_options(doom_fire
   PRIVATE
     -stdlib=libc++
 )
