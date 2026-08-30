@@ -28,7 +28,7 @@ cmake --build --preset build-debug-clang # Debug configuration
 
 or
 
-cmake --build --preset build-release-clang # Debug configuration
+cmake --build --preset build-release-clang # Release configuration
 ```
 
 #### gcc
@@ -38,7 +38,7 @@ cmake --build --preset build-debug-gcc # Debug configuration
 
 or
 
-cmake --build --preset build-release-gcc # Debug configuration
+cmake --build --preset build-release-gcc # Release configuration
 ```
 
 ### Running
@@ -46,19 +46,19 @@ cmake --build --preset build-release-gcc # Debug configuration
 #### clang
 
 ```
-./build/debug/clang/source/doom_fire
+./build/debug/clang/source/doom_fire # Debug configuration
 
 or
 
-./build/release/clang/source/doom_fire
+./build/release/clang/source/doom_fire # Release configuration
 ```
 
 #### gcc
 
 ```
-./build/debug/gcc/source/doom_fire
+./build/debug/gcc/source/doom_fire # Debug configuration
 
 or
 
-./build/release/gcc/source/doom_fire
+./build/release/gcc/source/doom_fire # Release configuration
 ```
