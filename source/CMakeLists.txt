@@ -1,7 +1,7 @@
 add_library(debug_options INTERFACE)
 target_compile_options(debug_options
   INTERFACE
-    "$<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CONFIG:Debug>>:-0g;-g>"
+    "$<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CONFIG:Debug>>:-Og;-g>"
     "$<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CONFIG:Release>>:-O3;-DNDEBUG>"
 )
 

@@ -33,11 +33,7 @@ void Application::update()
   static std::random_device rd{};
   static std::mt19937 mt{rd()};
 
-  static std::uniform_int_distribution horizontalShiftDist{-1, 1};
-  static auto randHorizontalShift = []() { return horizontalShiftDist(mt); };
-
-  static std::uniform_int_distribution paletteIndexShiftDist{0, 1};
-  static auto randPaletteIndexShift = []() { return paletteIndexShiftDist(mt); };
+  static std::uniform_int_distribution uniformDist{0, 3};
 
   // Initiate
   for (int i{}; i < common::WIN_WIDTH; ++i)
@@ -60,14 +56,16 @@ void Application::update()
   {
     for (int i{}; i < common::WIN_WIDTH; ++i)
     {
+      auto rand = uniformDist(mt);
+
       auto I = utilities::clamp(
-        static_cast<int>(i + randHorizontalShift())
+        static_cast<int>(i + (rand & 3)) - 1
       , 0
       , static_cast<int>(m_framebufferView.extent(0)) - 1
       );
 
       auto intensity = utilities::clamp(
-        static_cast<int>(m_fireView[I, j-1] = m_fireView[i, j]) - randPaletteIndexShift()
+        static_cast<int>(m_fireView[I, j-1] = m_fireView[i, j]) - (rand & 1)
       , 0
       , static_cast<int>(constants::PALETTE_SIZE) - 1
       );
@@ -127,7 +125,7 @@ void Application::timingEnd()
 
   if (m_frameElapsedTime_s < constants::FRAME_TIME_S)
   {
-    SDL_DelayPrecise((constants::FRAME_TIME_S - m_frameElapsedTime_s) * 1000 * 1000 * 1000);
+    SDL_DelayPrecise((constants::FRAME_TIME_S - m_frameElapsedTime_s) * 1e9);
   }
 
   auto fps = static_cast<double>(SDL_GetPerformanceFrequency()) / (SDL_GetPerformanceCounter() - m_frameStartCounts);
