@@ -42,7 +42,21 @@ void Application::update()
   // Initiate
   for (int i{}; i < common::WIN_WIDTH; ++i)
   {
-    m_fireView[i, common::FIRE_HEIGHT - 1] = constants::PALETTE_SIZE - 1;
+    if (m_fireOn)
+    {
+      m_fireView[i, common::FIRE_HEIGHT - 1] = m_heatingElementIntensity;
+    }
+    else
+    {
+      if (m_fireView[i, common::FIRE_HEIGHT - 1] == 1)
+      {
+        m_fireView[i, common::FIRE_HEIGHT - 1] = 0;
+      }
+      else
+      {
+        --m_fireView[i, common::FIRE_HEIGHT - 1];
+      }
+    }
   }
 
   // Propagate
@@ -246,6 +260,33 @@ void Application::input()
       if (event.key.key == SDLK_ESCAPE)
       {
         m_running = false;
+      }
+
+      if (event.key.key == SDLK_SPACE)
+      {
+        m_fireOn = !m_fireOn;
+      }
+
+      if (event.key.key == SDLK_LEFT)
+      {
+        int updatedIntensity = utilities::clamp(
+          static_cast<int>(m_heatingElementIntensity) - 1
+        , 0
+        , static_cast<int>(constants::PALETTE_SIZE) - 1
+        );
+
+        m_heatingElementIntensity = updatedIntensity;
+      }
+
+      if (event.key.key == SDLK_RIGHT)
+      {
+        int updatedIntensity = utilities::clamp(
+          static_cast<int>(m_heatingElementIntensity) + 1
+        , 0
+        , static_cast<int>(constants::PALETTE_SIZE) - 1
+        );
+
+        m_heatingElementIntensity = updatedIntensity;
       }
 
       break;

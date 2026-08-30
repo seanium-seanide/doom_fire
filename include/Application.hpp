@@ -30,7 +30,10 @@ private:
   SDL_Window* m_window{};
   SDL_Renderer* m_renderer{};
   SDL_Texture* m_framebufferTexture{};
+
   bool m_running{};
+  bool m_fireOn{true};
+  common::data_type m_heatingElementIntensity{constants::PALETTE_SIZE - 1};
 
   types::FramebufferType m_framebufferData{};
   types::FramebufferSpanType m_framebufferView{m_framebufferData.data()};
