@@ -7,4 +7,5 @@
       a gray-ish gradient up to `FIRE_HEIGHT`.
 * [ ] Resolve embedded TODOs.
 * [ ] Add MSVC build presets, with conditional compilation to circumvent MSVC's lack of complete support for `mdspan`.
+* [ ] Use generators more extensively for specifying compile options
 * [ ] Eventually, render the fire on the GPU via OpenGL.
