@@ -84,6 +84,7 @@ void Application::render()
   SDL_RenderPresent(m_renderer);
 }
 
+
 void Application::draw()
 {
   // Clear framebuffer to black

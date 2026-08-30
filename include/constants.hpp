@@ -19,7 +19,7 @@ constexpr auto FRAME_TIME_S{1.0 / FRAME_RATE_FPS}; // Seconds per frame
 static constexpr auto WIN_TITLE{"SDL3 Pixels"sv};
 
 constexpr uint32_t PALETTE_SIZE{37};
-[[maybe_unused]] constexpr std::array<uint32_t, PALETTE_SIZE> firePalette{
+constexpr std::array<uint32_t, PALETTE_SIZE> firePalette{
   0x00070707, 0x001F0707, 0x002F0F07, 0x00470F07,
   0x00571707, 0x00671F07, 0x00771F07, 0x008F2707,
   0x009F2F07, 0x00AF3F07, 0x00BF4707, 0x00C74707,
