@@ -48,11 +48,7 @@ void Application::update()
     }
     else
     {
-      if (m_fireView[i, common::FIRE_HEIGHT - 1] == 1)
-      {
-        m_fireView[i, common::FIRE_HEIGHT - 1] = 0;
-      }
-      else
+      if (m_fireView[i, common::FIRE_HEIGHT - 1] > 0)
       {
         --m_fireView[i, common::FIRE_HEIGHT - 1];
       }
@@ -131,13 +127,13 @@ void Application::timingEnd()
 
   if (m_frameElapsedTime_s < constants::FRAME_TIME_S)
   {
-    SDL_Delay((constants::FRAME_TIME_S - m_frameElapsedTime_s) * 1000.0);
+    SDL_DelayPrecise((constants::FRAME_TIME_S - m_frameElapsedTime_s) * 1000 * 1000 * 1000);
   }
 
   auto fps = static_cast<double>(SDL_GetPerformanceFrequency()) / (SDL_GetPerformanceCounter() - m_frameStartCounts);
 
   static int count{};
-  if (count == 10)
+  if (count == 30)
   {
     std::println(stderr, "[DEBUG] Frame rate: {}", fps);
     count = 0;
@@ -207,6 +203,7 @@ void Application::init()
     std::println(stderr, "SDL_CreateTexture: Failed to create SDL Texture");
 
     quit();
+    exit(1);
   }
 
   SDL_SetTextureScaleMode(m_framebufferTexture, SDL_SCALEMODE_NEAREST);
@@ -220,16 +217,19 @@ void Application::quit()
   if (m_framebufferTexture != nullptr)
   {
     SDL_DestroyTexture(m_framebufferTexture);
+    m_framebufferTexture = nullptr;
   }
 
   if (m_renderer != nullptr)
   {
     SDL_DestroyRenderer(m_renderer);
+    m_renderer = nullptr;
   }
 
   if (m_window != nullptr)
   {
     SDL_DestroyWindow(m_window);
+    m_window = nullptr;
   }
 
   if (SDL_WasInit(SDL_INIT_VIDEO))
@@ -264,7 +264,10 @@ void Application::input()
 
       if (event.key.key == SDLK_SPACE)
       {
-        m_fireOn = !m_fireOn;
+        if (!event.key.repeat)
+        {
+          m_fireOn = !m_fireOn;
+        }
       }
 
       if (event.key.key == SDLK_LEFT)

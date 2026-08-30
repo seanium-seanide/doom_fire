@@ -13,18 +13,10 @@ class Application
 {
 public:
   Application() = default;
+  Application(const Application& app) = delete;
+  Application(Application&& app) = delete;
 
   int main();
-
-  void init();
-  void quit();
-  void input();
-  void update();
-  void render();
-  void draw();
-  void timingStart();
-  void timingEnd();
-  void setPixel(std::size_t i, std::size_t j, uint32_t color);
 
 private:
   SDL_Window* m_window{};
@@ -43,6 +35,16 @@ private:
   uint64_t m_frameStartCounts{};
   uint64_t m_frameEndCounts{};
   double m_frameElapsedTime_s{};
+
+  void init();
+  void quit();
+  void input();
+  void update();
+  void render();
+  void draw();
+  void timingStart();
+  void timingEnd();
+  void setPixel(std::size_t i, std::size_t j, uint32_t color);
 };
 
 } // namespace doom_fire

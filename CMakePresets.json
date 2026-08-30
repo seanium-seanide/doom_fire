@@ -15,15 +15,39 @@
       }
     },
     {
+      "name": "config-release-clang",
+      "displayName": "Configure (release, clang)",
+      "description": "Configure sdl3-rendering for building in release configuration with clang++-22",
+      "binaryDir": "${sourceDir}/build/release/clang",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_COMPILER": "clang++-22",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
       "name": "config-debug-gcc",
       "displayName": "Configure (debug, gcc)",
-      "description": "Configure sdl3-rendering for building in debug configuration with g++-14",
+      "description": "Configure sdl3-rendering for building in debug configuration with g++-16",
       "binaryDir": "${sourceDir}/build/debug/gcc",
       "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_CXX_COMPILER": "g++-14",
+        "CMAKE_CXX_COMPILER": "g++-16",
         "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "config-release-gcc",
+      "displayName": "Configure (release, gcc)",
+      "description": "Configure sdl3-rendering for building in release configuration with g++-16",
+      "binaryDir": "${sourceDir}/build/release/gcc",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_COMPILER": "g++-16",
+        "CMAKE_BUILD_TYPE": "Release"
       }
     }
   ],
@@ -35,10 +59,22 @@
       "configurePreset": "config-debug-clang"
     },
     {
+      "name": "build-release-clang",
+      "displayName": "Build (release, clang)",
+      "description": "Build sdl3-rendering in release configuration with clang++-22",
+      "configurePreset": "config-release-clang"
+    },
+    {
       "name": "build-debug-gcc",
       "displayName": "Build (debug, gcc)",
-      "description": "Build sdl3-rendering in debug configuration with g++-14",
+      "description": "Build sdl3-rendering in debug configuration with g++-16",
       "configurePreset": "config-debug-gcc"
+    },
+    {
+      "name": "build-release-gcc",
+      "displayName": "Build (debug, gcc)",
+      "description": "Build sdl3-rendering in release configuration with g++-16",
+      "configurePreset": "config-release-gcc"
     }
   ],
   "testPresets": [
@@ -54,7 +90,7 @@
     {
       "name": "test-debug-gcc",
       "displayName": "Test (debug, gcc)",
-      "description": "Run unit tests for sdl3-rendering built in debug configuration with g++-14",
+      "description": "Run unit tests for sdl3-rendering built in debug configuration with g++-16",
       "configurePreset": "config-debug-gcc",
       "output": {
         "outputOnFailure": true
